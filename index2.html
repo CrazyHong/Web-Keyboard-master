@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>jQuery网页数字字母键盘代码 - 站长素材</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">  
+<script type="text/javascript" src="jquery-1.7.js"></script>
+<style type="text/css">
+.softkeyboard{ display:inline-block;}
+.softkeyboard td{ padding:4px;}
+.c_panel{ background-color:#333; text-align:center; padding:15px;}
+.input_cur{ border:1px solid #f00;}
+.i_button{ border:none; height:40px; width:50px; font-size:16px; font-family:"微软雅黑"; background-color:#666; color:#fff;}
+.i_button:active{ background-color:#999;}
+.i_button_num{}
+.i_button_btn{ float:right; width:88px;}
+.i_button_bs{ float:right; width:148px;}
+</style>
+</head>
+<body>
+<input type="text" name="text1" class="shuru input_cur" ><br>
+<script>
+//定义当前是否大写的状态 
+var CapsLockValue=0; 
+var curEditName;
+var check; 
+//document.write (' <DIV align=center id=\"softkeyboard\" name=\"softkeyboard\" style=\"position:absolute; left:300px; top:320px; width:517px; z-index:180;display:none\">'); 
+document.write (' <DIV class=\"softkeyboard\" id=\"softkeyboard\" name=\"softkeyboard\" style=\"display:; \">'); 
+
+//document.write (' ------数字----'); 
+document.write (' <div class=\"c_panel shuzi\" id="shuzi">'); 
+
+document.write ('<table align=\"center\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">');
+
+document.write (' <tr> '); 
+document.write (' <td><input class="i_button i_button_num" type=button onclick=\"addValue(\'7\');\" value=\" 7 \"></td>'); 
+document.write (' <td><input class="i_button i_button_num" type=button onclick=\"addValue(\'8\');\" value=\" 8 \"></td>'); 
+document.write (' <td><input class="i_button i_button_num" type=button onclick=\"addValue(\'9\');\" value=\" 9 \"></td>'); 
+document.write (' <td><input class="i_button i_button_btn i_button_sz" onclick=\"changePanl(\'zimu\');\" type=button value=符号 ></td>'); 
+document.write (' </tr>'); 
+
+document.write (' <tr> '); 
+document.write (' <td><input class="i_button i_button_num" type=button onclick=\"addValue(\'4\');\" value=\" 4 \"></td>'); 
+document.write (' <td><input class="i_button i_button_num" type=button onclick=\"addValue(\'5\');\" value=\" 5 \"></td>'); 
+document.write (' <td><input class="i_button i_button_num" type=button onclick=\"addValue(\'6\');\" value=\" 6 \"></td>'); 
+document.write (' <td><input class="i_button i_button_btn i_button_sz" onclick=\"changePanl(\'zimu\');\" type=button value=字母></td>'); 
+document.write (' </tr>'); 
+
+document.write (' <tr> '); 
+document.write (' <td><input class="i_button i_button_num" type=button onclick=\"addValue(\'1\');\" value=\" 1 \"></td>'); 
+document.write (' <td><input class="i_button i_button_num" type=button onclick=\"addValue(\'2\');\" value=\" 2 \"></td>'); 
+document.write (' <td><input class="i_button i_button_num" type=button onclick=\"addValue(\'3\');\" value=\" 3 \"></td>'); 
+document.write (' <td><input class="i_button i_button_btn" type=button onclick=\"clearValue();\"  value=清空 ></td>'); 
+document.write (' </tr>'); 
+
+document.write (' <tr> '); 
+document.write (' <td><input class="i_button i_button_num" type=button onclick=\"addValue(\'0\');\" value=\" 0 \"></td>'); 
+document.write (' <td></td>'); 
+document.write (' <td colspan=2><input class="i_button i_button_bs" type=button value=\" BackSpace\" onclick=\"backspace();\"></td>'); 
+document.write (' </tr>'); 
+
+document.write (' </table>'); 
+ 
+document.write ('</DIV>'); 
+//document.write ('--------------------------------------------'); 
+
+
+//document.write (' ------字母----');
+document.write (' <div class=\"c_panel zimu\" id=\"zimu\"  style=\"display:none;\">'); 
+document.write (' <table align=\"center\" width=\"98%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">'); 
+
+document.write (' <tr> '); 
+document.write (' <td><input class="i_button i_button_fh" type=button onclick=\"addValue(\'~\');\" value=\" ~ \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onclick=\"addValue(\'!\');\" value=\" ! \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onclick=\"addValue(\'@\');\" value=\" @ \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onclick=\"addValue(\'#\');\" value=\" # \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onclick=\"addValue(\'$\');\" value=\" $ \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onclick=\"addValue(\'%\');\" value=\" % \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onclick=\"addValue(\'^\');\" value=\" ^ \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onclick=\"addValue(\'*\');\" value=\" * \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onclick=\"addValue(\'(\');\" value=\" ( \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onclick=\"addValue(\')\');\" value=\" ) \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onclick=\"addValue(\'-\');\" value=\" - \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onclick=\"addValue(\'+\');\" value=\" + \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onclick=\"addValue(\'=\');\" value=\" = \"></td>'); 
+document.write (' <td><input class="i_button i_button_btn" type=button onclick=\"changePanl(\'shuzi\');\" value=\"切换数字\"></td>'); 
+document.write (' </tr>');
+
+document.write (' <tr> '); 
+
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'q\');\" value=\" q \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'w\');\" value=\" w \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'e\');\" value=\" e \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'r\');\" value=\" r \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'t\');\" value=\" t \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'y\');\" value=\" y \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'u\');\" value=\" u \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'i\');\" value=\" i \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'o\');\" value=\" o \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'p\');\" value=\" p \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onClick=\"addValue(\'[\');\" value=\" [ \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onClick=\"addValue(\']\');\" value=\" ] \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onClick=\"addValue(\'{\');\" value=\" { \"></td>'); 
+document.write (' <td><input class="i_button i_button_btn" type=button onClick=\"setCapsLock(this);\" value=\"切换大写\"></td>'); 
+
+
+document.write (' </tr>'); 
+document.write (' <tr> '); 
+document.write (' <td><input class="i_button i_button_fh" type=button onClick=\"addValue(\'|\');\" value=\" | \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'a\');\" value=\" a \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'s\');\" value=\" s \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'d\');\" value=\" d \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'f\');\" value=\" f \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'g\');\" value=\" g \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'h\');\" value=\" h \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'j\');\" value=\" j \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'k\');\" value=\" k \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'l\');\" value=\" l \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onclick=\"addValue(\';\');\" value=\" ; \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onclick=\"addValue(\':\');\" value=\" : \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onClick=\"addValue(\'}\');\" value=\" } \"></td>'); 
+document.write (' <td><input class="i_button i_button_btn" type=button onclick=\"clearValue();\"  value=清空 ></td>'); 
+document.write (' </tr>');
+ 
+document.write (' <tr> '); 
+document.write (' <td><input class="i_button i_button_fh" type=button onclick=\"addValue(\'_\');\" value=\" _ \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'z\');\" value=\" z \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'x\');\" value=\" x \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'c\');\" value=\" c \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'v\');\" value=\" v \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'b\');\" value=\" b \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'n\');\" value=\" n \"></td>'); 
+document.write (' <td><input class="i_button i_button_zm" type=button onclick=\"addValue(\'m\');\" value=\" m \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onClick=\"addValue(\'<\');\" value=\" < \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onClick=\"addValue(\'>\');\" value=\" > \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onClick=\"addValue(\'/\');\" value=\" / \"></td>'); 
+document.write (' <td><input class="i_button i_button_fh" type=button onClick=\"addValue(\'?\');\" value=\" ? \"></td>'); 
+document.write (' <td colspan=2><input class="i_button i_button_bs" type=button value=\" BackSpace\" onclick=\"backspace();\"></td>'); 
+document.write (' </tr>'); 
+
+document.write (' </table>'); 
+document.write (' </div>'); 
+//document.write ('--------------------------------------------'); 
+document.write ('</DIV>'); 
+
+//给输入的密码框添加新值 
+function addValue(newValue) 
+{ 
+	CapsLockValue==0?$(".input_cur").val($(".shuru").val()+ newValue):$(".input_cur").val($(".shuru").val()+ newValue.toUpperCase())
+} 
+//清空 
+function clearValue() 
+{ 
+	$(".input_cur").val(""); 
+} 
+//实现BackSpace键的功能 
+function backspace() 
+{ 
+	var longnum=$(".input_cur").val().length; 
+	var num ;
+	num=$(".input_cur").val().substr(0,longnum-1); 
+	$(".input_cur").val(num); 
+} 
+function changePanl(oj){
+	$("#"+oj).siblings("div").hide();
+	$("#"+oj).show();
+}
+//设置是否大写的值 
+function setCapsLock(o) 
+{ 
+	  if (CapsLockValue==0){ 
+	  		CapsLockValue=1; 
+			$(o).val("转化小写");
+			$.each($(".i_button_zm"),function(b, c) {  
+			  $(c).val($(c).val().toUpperCase());
+			});
+	  }else{ 
+	  		CapsLockValue=0; 
+			$(o).val("转化大写");	
+			$.each($(".i_button_zm"),function(b, c) {  
+			  $(c).val($(c).val().toLowerCase());
+			});
+	  }
+} 
+
+window.onload=function(){
+//	changePanl("zimu");
+}
+
+
+</script>
+
+<div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+<p>适用浏览器：IE8、360、FireFox、Chrome、Safari、Opera、傲游、搜狗、世界之窗.</p>
+<p>来源：<a href="http://sc.chinaz.com/" target="_blank">站长素材</a></p>
+</div>
+</body>
+</html>
